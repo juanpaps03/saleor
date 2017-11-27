@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django_babel.templatetags.babel import currencyfmt
 
 from ..core.utils import get_user_shipping_country, to_local_currency
@@ -15,7 +16,7 @@ from .models import Cart
 from .utils import (
     check_product_availability_and_warn, get_cart_data, get_or_empty_db_cart)
 
-
+@csrf_exempt
 @get_or_empty_db_cart(cart_queryset=Cart.objects.for_display())
 def index(request, cart):
     """Display cart details."""
@@ -105,7 +106,7 @@ def update(request, cart, variant_id):
         status = 400
     return JsonResponse(response, status=status)
 
-
+@csrf_exempt
 @get_or_empty_db_cart(cart_queryset=Cart.objects.for_display())
 def summary(request, cart):
     """Display a cart summary suitable for displaying on all pages."""
@@ -127,6 +128,7 @@ def summary(request, cart):
             'update_url': reverse(
                 'cart:update-line', kwargs={'variant_id': line.variant_id}),
             'variant_url': line.variant.get_absolute_url()}
+
     if cart.quantity == 0:
         data = {'quantity': 0}
     else:
@@ -137,3 +139,9 @@ def summary(request, cart):
             'lines': [prepare_line_data(line) for line in cart.lines.all()]}
 
     return render(request, 'cart-dropdown.html', data)
+
+
+def get_shopify_data(request):
+    print(request.POST)
+    return TemplateResponse(
+        request, 'cart/loading_shopify.html')

@@ -39,7 +39,7 @@ if os.environ.get('REDIS_URL'):
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://saleor:saleor@localhost:5432/saleor',
+        default='postgres://saleor:saleor@localhost:32770/saleor',
         conn_max_age=600)}
 
 
@@ -123,7 +123,8 @@ TEMPLATES = [{
         'string_if_invalid': '<< MISSING VARIABLE "%s" >>' if DEBUG else ''}}]
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ.get('SECRET_KEY')
+#SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'GUD,("1v;?7!UVS6:^e[9J\{cf69eVvyZJbL0FXTtrww$VQ<*uC.?4FT$Qe*iV8'
 
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
