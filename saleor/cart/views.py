@@ -140,7 +140,7 @@ def summary(request, cart):
 
     return render(request, 'cart-dropdown.html', data)
 
-
+@csrf_exempt
 def get_shopify_data(request):
     print(request.POST)
     return TemplateResponse(
